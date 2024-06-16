@@ -1,26 +1,52 @@
 import styles from "./Checkout.module.css"
-import { useState } from "react"
+import { useEffect, useState, useRef } from "react"
 
-function Checkout ({product}) {
+interface Product {
+    id: string;
+    title: string;
+    description: string;
+    price: number;
+    stock: number;
+    images: string[];
+    colors: string[];
+    onsale: boolean;
+    quantity: number;
+}
+
+interface CheckoutProps {
+    product: Product
+}
+
+function Checkout ({product}: CheckoutProps) {
     const [quantity, setQuantity] = useState(1);
     const [button, setButton] = useState(false);
-    
-    let productsOnCart = [];
-    if (localStorage.getItem("cart")){
-        productsOnCart = JSON.parse(localStorage.getItem("cart") || "[]")
-    } else { 
-        localStorage.setItem("cart",JSON.stringify([]));
+    const units = useRef<HTMLInputElement>(null)
+
+    useEffect(() => {
+    let productsOnCart: Product[] = [];
+    const cart = localStorage.getItem("cart")
+    if (cart){
+        productsOnCart = JSON.parse(cart);
+    } 
+    const isInCart = productsOnCart.some((each) => each.id === product.id);
+    if(isInCart) {
+        const productOnCart = productsOnCart.find((each) => each.id === product.id);
+        setQuantity(productOnCart?.quantity || 1 ); 
+    } else {
+    setQuantity(1);
     }
+    setButton(isInCart)
+}, [product]);
+
     const manageCart = () => {
-        let productsOnCart = [];
-        if(localStorage.getItem("cart")){
-            productsOnCart = JSON.parse(localStorage.getItem("cart"));
-        } else {
-            [];
+        let productsOnCart: Product[] = [];
+        const cart = localStorage.getItem("cart");
+        if(cart){
+            productsOnCart = JSON.parse(cart);
         }
-        const one = productsOnCart.find((each) => each.id === product.id);
+        const one = productsOnCart.some((each) => each.id === product.id);
         if(!one) {
-            productsOnCart.push(product);
+            productsOnCart.push({ ...product, quantity });
             setButton(true);
         } else {
             productsOnCart = productsOnCart.filter((each) => each.id !== product.id);
@@ -65,6 +91,7 @@ function Checkout ({product}) {
                                 type="number" 
                                 min="1" 
                                 value={quantity} 
+                                ref={units}
                                 onChange={(event) => setQuantity(Number(event?.target.value))}
                             />
                             <button 
