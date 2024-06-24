@@ -1,9 +1,8 @@
-import styles from "./ProductCard.module.css";
+import styles from "./OnSaleCard.module.css"
 import { Link } from "react-router-dom";
 
-function ProductCard (props) {
+function OnSaleCard(props) {
     const { id, title, color, price, image } = props
-    
     return (
         <>
             <Link className={styles["product-card"]} to={"/details/"+id}>
@@ -23,9 +22,9 @@ function ProductCard (props) {
                         Incluye impuesto País y percepción AFIP
                     </div>
                 </div>
-            </Link>    
+            </Link> 
         </>
     )
 }
 
-export default ProductCard;
+export default OnSaleCard; 
