@@ -7,11 +7,12 @@ import NotFound from "./NotFound.js";
 import Thumbs from "../components/Thumbs.js";
 import Description from "../components/Description.js";
 import Checkout from "../components/Checkout.js";
+import Product from "../interfaces/Product.js";
 
-function Details (){
+function Details (){ 
     const { id } = useParams();
-    const product = products.find((each) => each.id === id)
-    const onsale = products.filter((each) => each.onsale === true )
+    const product:Product = products.find((each) => each.id === id)
+    const onsale:Product[] = products.filter((each) => each.onsale === true )
     if(product) {
     return (
         <>
@@ -26,14 +27,14 @@ function Details (){
             <div className="w-full block justify-center m-[20px_0]">
             <h2 className="text-center text-black text-[28px] font-bold break-words mt-0">Ofertas de la semana</h2>
                 <div id="product-container" className="w-full flex justify-center flex-wrap lg:justify-center">
-                    { onsale.map((product) =>(
+                    { onsale.map((product:Product) =>(
                             <ProductCard
                             key={product.id}
                             id ={product.id}
                             title={product.title}
                             price={product.price}
-                            color={product.colors[0]}
-                            image={product.images[0]}
+                            colors={product.colors}
+                            images={product.images}
                             />
                         ))
                     }

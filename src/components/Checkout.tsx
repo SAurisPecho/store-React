@@ -1,22 +1,8 @@
 import { useEffect, useState, useRef } from "react"
+import Product from "../interfaces/Product";
+import ProductProp from "../interfaces/ProductProp";
 
-interface Product {
-    id: string;
-    title: string;
-    description: string;
-    price: number;
-    stock: number;
-    images: string[];
-    colors: string[];
-    onsale: boolean;
-    quantity: number;
-}
-
-interface CheckoutProps {
-    product: Product
-}
-
-function Checkout ({product}: CheckoutProps) {
+function Checkout ({product}: ProductProp) {
     const [quantity, setQuantity] = useState(1);
     const [button, setButton] = useState(false);
     const units = useRef<HTMLInputElement>(null)

@@ -4,11 +4,11 @@ import NavButton from "./NavButton";
 function NavBar(){
     return (
         <>
-        <header className="w-full min-h-[150px] bg-[#ff3b3c] p-[20px_20px_0_20px] flex flex-col items-center">
-            <div className="w-full flex flex-col justify-between items-center flex-grow
-            md:flex-row lg:w-[1024px]">
+        <header className="w-full min-h-[150px] bg-[#ff3b3c] p-[20px_20px_0_20px] flex flex-col items-center ">
+            <div className="w-full flex flex-col justify-between lg:justify-around items-center flex-grow
+            md:flex-row xl:w-[1100px]">
                 <Link to="/" className="w-full flex items-center flex-grow justify-start pt-2
-                md:w-1/3 md:justify-start md:p-0">
+                md:w-1/3 md:justify-around md:p-0">
                     <img
                         className="h-[50px]"
                         src="../public/tiendamia-logo.svg"
@@ -26,7 +26,7 @@ function NavBar(){
                     />
                 </form>
                 <ul className="w-full flex items-center flex-grow justify-center list-none
-                md:w-1/3 md:justify-end md:py-0">
+                md:w-1/3 md:py-0">
                     <li id="facebook" className="w-[50px] h-[50px] list-none">
                         <Link to="/" className="w-[50px] h-[50px]">
                             <img
@@ -54,8 +54,7 @@ function NavBar(){
                 </ul>
             </div>
             <nav id="navbar" className="w-full p-[15px_5px] bg-[#ff3b3c] flex justify-between list-none text-[14px]
-            sm:w-full
-            lg:w-[1024px]">
+            sm:w-full lg:justify-around xl:w-[1100px]">
                 <NavButton title="Ofertas" link="/" />
                 <NavButton title="Cómo comprar" link="/" />
                 <NavButton title="Costos y tarifas" link="/" />

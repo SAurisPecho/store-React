@@ -5,6 +5,7 @@ import Hero from "../components/Hero";
 import Footer from "../components/Footer";
 import OnSaleCard from "../components/OnSaleCard";
 import { useState } from "react";
+import Product from "../interfaces/Product"
 
 function Onsale() {
     const [ from , setFrom ] = useState(0);
@@ -37,14 +38,14 @@ function Onsale() {
                 </button>
             </div>
             <div className={styles["product-container"]} id="products">
-                {onSaleProducts.slice(from,to).map((each) => (
+                {onSaleProducts.slice(from,to).map((each: Product) => (
                     <OnSaleCard
                     key={each.id}
                     id ={each.id}
                     title={each.title}
                     price={each.price}
-                    color={each.colors[0]}
-                    image={each.images[0]}
+                    colors={each.colors}
+                    images={each.images}
                     />
                 ))}
             </div>
@@ -54,7 +55,6 @@ function Onsale() {
                 </button>
             </div>
         </main>
-        
         <Footer />
         </>
     )

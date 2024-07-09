@@ -1,5 +1,6 @@
+import ProductProp from "../interfaces/ProductProp";
 
-function Description ({product}) {
+function Description ({product}: ProductProp) {
     
     return (
         <>
