@@ -1,22 +1,43 @@
-import NavBar from "../components/NavBar";
+import NavBar from "../components/NavBar"; 
 import Footer from "../components/Footer";
-import products from "../assets/products.js"
+// import products from "../assets/products.js"
 import { useParams } from "react-router-dom"
 import ProductCard from "../components/ProductCard.js";
-import NotFound from "./NotFound.js";
+import Hero from "../components/Hero.js";
 import Thumbs from "../components/Thumbs.js";
 import Description from "../components/Description.js";
 import Checkout from "../components/Checkout.js";
 import Product from "../interfaces/Product.js";
+import axios from "axios";
+import { useState, useEffect } from "react";
 
 function Details (){ 
     const { id } = useParams();
-    const product:Product = products.find((each) => each.id === id)
-    const onsale:Product[] = products.filter((each) => each.onsale === true )
-    if(product) {
+    const [product, setProduct] = useState<Product>({
+        id: "",
+        title: "",
+        price: 0,
+        images: [],
+        colors: [],
+    });
+    const [onsale, setOnsale] = useState<Product[]>([]);
+
+    useEffect(() => {
+        axios("/JSON/products.json")
+        .then((res) => {
+            const products: Array<Product> = res.data;
+            const detailProduct: Product | undefined = products.find((each) => each.id === id);
+            detailProduct && setProduct(detailProduct);
+            const filterProduct: Array<Product> = products.filter((each) => each.onsale);
+            filterProduct.length > 0 && setOnsale(filterProduct);
+        })
+        .catch((err) => console.log(err));
+    }, [id]);
+
     return (
         <>
         <NavBar />
+        {!product && <Hero first="NOT" second="found" />}
         <main>
         <div className="flex flex-wrap md:w-[730px] lg:w-[940px]">
             <div id="details" className="w-full flex flex-col sm:flex-row justify-center flex-wrap lg:flex-nowrap ">
@@ -44,12 +65,6 @@ function Details (){
         </main>
         <Footer />
         </>
-    )} 
-    return(
-        <>
-        <NotFound />
-        </>
-    )
-}
+    )}
 
 export default Details;
