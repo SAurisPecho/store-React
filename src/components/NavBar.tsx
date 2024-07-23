@@ -1,7 +1,20 @@
 import { Link } from "react-router-dom";
 import NavButton from "./NavButton";
+import { useRef } from "react";
+import { useDispatch } from "react-redux";
+import productsActions from "../store/actions/products";
+
+const { captureText } = productsActions;
 
 function NavBar(){
+    const text = useRef<HTMLInputElement>(null);
+    const dispatch = useDispatch();
+    const setText = () => {
+        dispatch(captureText({
+            text:text.current?.value
+        }))
+    }
+
     return (
         <>
         <header className="w-full min-h-[150px] bg-[#ff3b3c] p-[20px_20px_0_20px] flex flex-col items-center ">
@@ -23,6 +36,8 @@ function NavBar(){
                         type="text"
                         placeholder="Search"
                         id="search"
+                        ref={text}
+                        onChange={setText}
                     />
                 </form>
                 <ul className="w-full flex items-center flex-grow justify-center list-none
