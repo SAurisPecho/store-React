@@ -1,9 +1,8 @@
-interface Props {
-    total: number;
-}
-function CartResume (props: Props) {
-    const {total} = props;
+import { useSelector } from "react-redux";
 
+function CartResume () {
+    const total = useSelector((store: any) => store.products.total)
+    
     return (
         <>
         <div className="w-[300px] mt-[20px] p-3 flex-col bg-[#f2f2f2] rounded-[9px] break-words block md:flex md:justify-between 

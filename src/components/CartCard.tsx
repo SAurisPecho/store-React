@@ -1,10 +1,15 @@
 import { useRef, useState } from "react";
 import ProductProp from "../interfaces/ProductProp";
+import { useDispatch } from "react-redux";
+import productsActions from "../store/actions/products";
+
+const { calculateTotal } = productsActions;
 
 function CartCard ({product}:ProductProp) {
     const {id, title,  description, price, images, colors, quantity }  = product;
     const [totalPrice, setTotalPrice] = useState(price* (quantity ?? 0));
     const units = useRef<HTMLInputElement>(null);
+    const dispatch = useDispatch();
 
     const manageUnits = () => {
         let productsOnCart = JSON.parse(localStorage.getItem("cart") || "[]");
@@ -19,6 +24,7 @@ function CartCard ({product}:ProductProp) {
             });
         }
         setTotalPrice(price * Number(units.current?.value));
+        dispatch(calculateTotal({products: productsOnCart}));
         localStorage.setItem("cart", JSON.stringify(productsOnCart)) 
     }
 

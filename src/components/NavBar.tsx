@@ -1,13 +1,17 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import NavButton from "./NavButton";
 import { useRef } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import productsActions from "../store/actions/products";
 
 const { captureText } = productsActions;
 
 function NavBar(){
     const text = useRef<HTMLInputElement>(null);
+    const location = useLocation();
+    const pathname = location.pathname;
+    const textStore = useSelector((store:any) => store.products.text)
+
     const dispatch = useDispatch();
     const setText = () => {
         dispatch(captureText({
@@ -31,14 +35,16 @@ function NavBar(){
                 </Link>
                 <form className="w-full flex items-center flex-grow justify-center py-2
                 md:w-1/3 md:py-0">
-                    <input
+                    {pathname === "/" && (<input
                         className="h-[60px] rounded-[15px] border-none w-full p-[10px] m-0_[20px] text-[14px] text-center"
                         type="text"
                         placeholder="Search"
                         id="search"
                         ref={text}
                         onChange={setText}
-                    />
+                        defaultValue={textStore}
+                    />)
+                    }
                 </form>
                 <ul className="w-full flex items-center flex-grow justify-center list-none
                 md:w-1/3 md:py-0">
