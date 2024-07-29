@@ -2,8 +2,10 @@ import { useRef, useState } from "react";
 import ProductProp from "../interfaces/ProductProp";
 import { useDispatch } from "react-redux";
 import productsActions from "../store/actions/products";
+import Product from "../interfaces/Product";
 
 const { calculateTotal } = productsActions;
+const { calculateCant } =productsActions;
 
 function CartCard ({product}:ProductProp) {
     const {id, title,  description, price, images, colors, quantity }  = product;
@@ -24,8 +26,10 @@ function CartCard ({product}:ProductProp) {
             });
         }
         setTotalPrice(price * Number(units.current?.value));
+        localStorage.setItem("cart", JSON.stringify(productsOnCart));
         dispatch(calculateTotal({products: productsOnCart}));
-        localStorage.setItem("cart", JSON.stringify(productsOnCart)) 
+        const cantProductsOnCart = productsOnCart.reduce((acc:number, current:Product) => acc + current.quantity, 0)
+        dispatch(calculateCant({cantProducts: cantProductsOnCart}));
     }
 
     return (

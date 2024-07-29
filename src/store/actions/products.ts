@@ -10,6 +10,10 @@ const calculateTotal = createAction("calculateTotal", (obj) => {
   };
 });
 
-const productsActions = { captureText, calculateTotal };
+const calculateCant = createAction("obtCantProductsOnCart", (obj) => ({
+  payload: {cantProducts: obj.cantProducts },
+}))
+
+const productsActions = { captureText, calculateTotal, calculateCant };
 
 export default productsActions;

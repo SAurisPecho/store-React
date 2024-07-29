@@ -3,8 +3,9 @@ import productsActions from "../actions/products";
 
 const { captureText } = productsActions;
 const { calculateTotal } = productsActions;
+const { calculateCant } = productsActions;
 
-const initialState = { text: "", total: 0 };
+const initialState = { text: "", total: 0, cantProducts: 0};
 
 const productsReducers = createReducer(initialState, (build) =>
   build.addCase(captureText, (state, action) => {
@@ -22,6 +23,13 @@ const productsReducers = createReducer(initialState, (build) =>
       ...state,
       total
     };
+    return newState;
+  })
+  .addCase(calculateCant, (state, action) => {
+    const newState = {
+      ...state,
+      cantProducts: action.payload.cantProducts,
+    }
     return newState;
   })
 );

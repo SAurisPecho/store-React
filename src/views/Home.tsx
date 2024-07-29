@@ -2,7 +2,6 @@ import Footer from "../components/Footer";
 import Hero from "../components/Hero";
 import NavBar from "../components/NavBar";
 import ProductCard from "../components/ProductCard";
-// import products from "../assets/products.js";
 import Product from "../interfaces/Product.js";
 import axios from "axios";
 import { useState, useEffect } from "react";

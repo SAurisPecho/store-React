@@ -1,11 +1,16 @@
 import { useEffect, useState, useRef } from "react"
 import Product from "../interfaces/Product";
 import ProductProp from "../interfaces/ProductProp";
+import { useDispatch } from "react-redux";
+import productsActions from "../store/actions/products";
+
+const { calculateCant } = productsActions;
 
 function Checkout ({product}: ProductProp) {
     const [quantity, setQuantity] = useState(1);
     const [button, setButton] = useState(false);
-    const units = useRef<HTMLInputElement>(null)
+    const units = useRef<HTMLInputElement>(null);
+    const dispatch = useDispatch();
 
     useEffect(() => {
     let productsOnCart: Product[] = [];
@@ -38,6 +43,10 @@ function Checkout ({product}: ProductProp) {
             setButton(false);
         }
         localStorage.setItem("cart", JSON.stringify(productsOnCart));
+        const cantProductsOnCart = productsOnCart.reduce((acc: number, current: Product)=>acc + current.quantity , 0);
+        console.log(cantProductsOnCart);
+        dispatch(calculateCant({cantProducts: cantProductsOnCart}))
+        
     };
     return (
         <>

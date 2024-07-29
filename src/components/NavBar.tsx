@@ -1,16 +1,21 @@
 import { Link, useLocation } from "react-router-dom";
 import NavButton from "./NavButton";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import productsActions from "../store/actions/products";
+import Product from "../interfaces/Product";
 
 const { captureText } = productsActions;
+const { calculateCant } = productsActions;
 
 function NavBar(){
     const text = useRef<HTMLInputElement>(null);
     const location = useLocation();
     const pathname = location.pathname;
     const textStore = useSelector((store:any) => store.products.text)
+    const cantProductsOnCart = useSelector((store:any) => store.products.cantProducts)
+    console.log(cantProductsOnCart);
+    
 
     const dispatch = useDispatch();
     const setText = () => {
@@ -18,6 +23,13 @@ function NavBar(){
             text:text.current?.value
         }))
     }
+
+    useEffect(() => {
+        const productOnCart = JSON.parse(localStorage.getItem("cart") ?? "[]");
+        const cantProductsOnCart = productOnCart.reduce((acc:number, current:Product) => acc + current.quantity, 0);
+        dispatch(calculateCant({cantProducts: cantProductsOnCart}));
+    }, [dispatch]);
+
 
     return (
         <>
@@ -64,19 +76,22 @@ function NavBar(){
                             />
                         </Link>
                     </li>
-                    <li id="cart" className="w-[50px] h-[50px] list-none">
-                        <Link to="/cart" className="w-[50px] h-[50px]" >
+                    <li id="cart" className="w-[50px] h-[50px] list-none relative">
+                        <Link to="/cart" className="w-[50px] h-[50px] relative" >
                             <img
                                 className="w-[50px] h-[50px] p-[10px]"
                                 src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAA6/NlyAAAAAXNSR0IArs4c6QAAA81JREFUaEPtml2ITVEUx/9/UsjDiDFJHpQ8iAfNNCFfSV4YKUUzJOHVw0QKTT4ilDJ58UBpkq/yIIM3GV9NE0Z58aCRfGZGyseDByx3ZV/dtn3vuedjnzNz792vZ++11m//V3vts84hqmywynhRA650xWsK1xSusB2opXSFCfofTk1h3RIRkRGu9ACAXSSv2RxOhSsAWDl/A6gj+a0QupKBlXMayffVAjxEcko1pfQFkpvKAnYdWCJSD+ADgNHW8+Uk72R1yImIxvMVwHgrho0kL0YGNqf3DQCrLCPnSG7NEHgZAHvDtcpMJPklLvAGAJctI98B1JP8kQW0iBwHsNvy3UdyviueUBcPERkLYAjABMtYK0l7I1LhF5FnAOZazvaTPBQb2KT1WQDbLGO3SNqp7h3YnCuDDkfNuXgeJQW8FECPZewXgKkkVf3UhojoxqsAhUNjaCDpvC2GSmmjsK55o0XdctROsjM12r9X4KsA1lk+z5PcXCyO0MAG+giAvZbRfpKNaQGXKEdtJC8lDTwDwEuH0dkkn6cBLSKLAdyzfBUtR/l5kRQ2Kuuh0GQ5PEZyT0rArizrJbmwlP84wDsAnLKMvwMwvdiBkeRGiEg/gHmWzQ6Sh30B1wH4lMVVs0Q5aiL5xAuwSetuAKstBw8A3E5STYetWQBa7XLkejuy10ZOaQO8HsAVz3Dlmu8iuSVoclzgMQA+O66aQX59PF9BMjCzYgEblc8A2O6DIITN+ySXlDM/CWB1dLccZ57maMNuQbnX2tjARuXXWo4soMcAbnqCzJv9SPJ0GB9JAWvt22c5HiA5M0wwacxNCrjYVTOwLqYBWegjEWCT1n0Ami2AzlybpT1tKG8Xj0LDIuK6av4E0EhSuxLDYiSp8KRceXoLQNtA9tDu4QsPxD0k7WZESTeJAZu0PgFgpwewYiYPkjwQxl/SwJMBaIkaFyaIGHOzBTYqrwSgX+3SgM4e2EBr2/Soo2kfQ0zn0uEBnA8t12SbY3rG2vCze9lJwGd7aCVB4NtGooeW72CTsO8dWEROAmgDoCd4b65Oa6NPP8oFjjhrixn3Ciwi1wG0OJy3BEHHWVtqJ70Bi4j2urTn5RoPSS4qFlictUFp4xO4A4DzC57+cELS/rD+L1YRibw2S2DXy0Q+nsHci3tDCYUjr80SWDsgr3Iqj3IEUfK1UUQir80M2Ny49KeSLgu6m+SaoMBEJPLaTA6tgtuWqrVWfxID8DTodC4M1igdaW0mZSlIxSyeezuls4Apx2cNuJxdGslzagqPZPXKib3qFP4DPc5DTOx+iUAAAAAASUVORK5CYII="
                             />
+                            <span className="bg-white text-[#ce2a2a] rounded-full w-6 h-6 flex items-center justify-center absolute top-3 right-3 translate-x-1/2 -translate-y-1/2">
+                                {cantProductsOnCart}
+                            </span>
                         </Link>
                     </li>
                 </ul>
             </div>
             <nav id="navbar" className="w-full p-[15px_5px] bg-[#ff3b3c] flex justify-between list-none text-[14px]
             sm:w-full lg:justify-around xl:w-[1100px]">
-                <NavButton title="Ofertas" link="/" />
+                <NavButton title="Ofertas" link="/onSale" />
                 <NavButton title="Cómo comprar" link="/" />
                 <NavButton title="Costos y tarifas" link="/" />
                 <NavButton title="Mis pedidos" link="/" />
